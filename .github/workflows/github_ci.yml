@@ -1,4 +1,4 @@
-name: POLYNOMIALS
+name: TRANSLATOR
 
 on: [push, pull_request]
 
