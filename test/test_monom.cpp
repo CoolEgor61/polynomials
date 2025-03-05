@@ -73,6 +73,13 @@ TEST(Monom, can_mul_monoms)
 	EXPECT_EQ(345, c.get_deg());
 	EXPECT_EQ(188, c.get_k());
 }
+TEST(Monom, can_mul_monom_const)
+{
+	Monom a(111, 2); // 2xyz
+	Monom c = a*3; // 6xyz;
+	EXPECT_EQ(1, c.is_deg_correct());
+	EXPECT_EQ(6, c.get_k());
+}
 TEST(Monom, cant_mul_monoms1)
 {
 	Monom a(766, 2); // 2*x^7*y^6*z^6

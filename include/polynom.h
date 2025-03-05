@@ -5,29 +5,18 @@
 #include "list.h"
 #include "monom.h"
 
-class Polynom : TList<Monom>
+class Polynom
 {
 public:
-	Polynom()
-	{
-		TNode<Monom>* s = new TNode<Monom>;
-		first = s;
-		s->next = s;
-		size = 1;
-	}
-	~Polynom()
-	{
-		while (size) this->pop_front();
-	}
-	Polynom(const Polynom& p)
-	{
-		while ((p.next) != NULL) {
-			TNode<Monom>* new_node = new TNode<Monom>(p.value,p.next);
-			//p.next = p.next.next;
-			if (this->first == NULL) this->first = p.first;
-			size++;
-		}
-	}
+	TList<Monom> Plnm;
+	TList<Monom> get_Plnm() noexcept;
+	Polynom();
+	Polynom(const Polynom& p);
+	Polynom(TList<Monom>& Plnm);
+	Polynom operator+(Polynom& p);
+	Polynom operator-(Polynom& p);
+	Polynom operator*(const double q);
+	Polynom operator*(Polynom& p);
 };
 
 #endif

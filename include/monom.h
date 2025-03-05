@@ -2,6 +2,8 @@
 #ifndef monom_h
 #define monom_h
 
+#include <iostream>
+
 const int MAX_DEG = 9;
 
 class Monom
@@ -9,17 +11,18 @@ class Monom
 	int degree;
 	double k;
 public:
-	Monom(int _degree = 0, double _k = 0) : k(_k) { if (_degree <= 999) degree = _degree; else throw 1; };
-	int get_deg();
-	double get_k();
-	int x_deg();
-	int y_deg();
-	int z_deg();
+	Monom(int _degree = 0, double _k = 0) : k(_k) { if (_degree <= 999) degree = _degree; else throw std::logic_error("wrong degree"); };
+	int get_deg() noexcept;
+	double get_k() noexcept;
+	int x_deg() noexcept;
+	int y_deg() noexcept;
+	int z_deg() noexcept;
 	bool is_deg_correct();
 	Monom operator+(const Monom& m);
 	Monom operator-(const Monom& m);
 	Monom operator*(const Monom& m);
-	Monom operator=(const Monom& m);
+	Monom operator*(const double q);
+	Monom& operator=(const Monom& m);
 };
 
 #endif
