@@ -12,7 +12,7 @@ public:
 	TList<Monom> get_Plnm() noexcept;
 	Polynom();
 	Polynom(const Polynom& p);
-	Polynom(TList<Monom>& Plnm);
+	Polynom(const TList<Monom>& Plnm);
 	Polynom operator+(Polynom& p);
 	Polynom operator-(Polynom& p);
 	Polynom operator*(const double q);

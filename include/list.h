@@ -10,7 +10,7 @@ public:
     T value;
     TNode<T>* next;
     // constuctor
-    TNode(T new_value=0, TNode<T>* next_node=NULL) : value(new_value), next(next_node) {};
+    TNode(const T& new_value=0, TNode<T>* next_node=NULL) : value(new_value), next(next_node) {};
     TNode& operator=(const TNode& m)
     {
         if (this != &m)
@@ -36,11 +36,11 @@ public:
         TNode<T>* get_ptr() noexcept { return ptr; };
         mIterator(TNode<T>* p) : ptr(p) {};
         mIterator(const mIterator& iter) : ptr(iter.ptr) {};
-        TNode<T> operator*() { return (*(this->ptr)); };
-        TNode<T> operator->() { return (*(this->ptr)); };
+        TNode<T>* operator*() { return (this->ptr); };
+        TNode<T>* operator->() { return (this->ptr); };
         bool operator== (const TList<T>::mIterator& iter) { return (this->ptr == iter.ptr); };
         bool operator!= (const TList<T>::mIterator& iter) { return !(this->ptr == iter.ptr); };
-        mIterator& operator++() { this->ptr = ptr->next; retrun(*this); };
+        mIterator& operator++() { this->ptr = ptr->next; return(*this); };
         mIterator operator++(int) { mIterator new_it(*this); new_it.ptr = new_it.ptr->next; return(new_it); };
     };
     TList() : first(NULL), size(0) {};
@@ -148,8 +148,8 @@ public:
         else while (node_->next != NULL) node_ = node_->next;
         return node_;
     }
-    TNode<T>* begin() noexcept { return first; };
-    TNode<T>* end() noexcept { return NULL; };
+    mIterator begin() noexcept { return first; };
+    mIterator end() noexcept { return NULL; };
 };
 
 #endif 

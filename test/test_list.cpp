@@ -21,6 +21,26 @@ TEST(List, can_create_list2)
 	ASSERT_NO_THROW(TList<int> c(a));
 
 }
+TEST(List, can_create_list3)
+{
+	TNode<int>* a = new TNode<int>(25, NULL);
+	TList<int> c(a);
+	for (int i = 24; i > 0; i--) c.push_back(i);
+	TList<int> copy(c);
+	EXPECT_NE(&c, &copy);
+	int flag = 0;
+	TNode<int>* next_c = c.get_first(), * next_copy = copy.get_first();
+	for (int i = 25; i > 0; i--) {
+		if (next_c->value != next_copy->value)
+		{
+			flag = 1;
+			i = 0;
+		}
+		next_c = next_c->next;
+		next_copy = next_copy->next;
+	}
+	EXPECT_EQ(0, flag);
+}
 TEST(List, can_push_front)
 {
 	TNode<int>* a = new TNode<int>(25, NULL);

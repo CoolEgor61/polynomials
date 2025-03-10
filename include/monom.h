@@ -14,9 +14,9 @@ public:
 	Monom(int _degree = 0, double _k = 0) : k(_k) { if (_degree <= 999) degree = _degree; else throw std::logic_error("wrong degree"); };
 	int get_deg() noexcept;
 	double get_k() noexcept;
-	int x_deg() noexcept;
-	int y_deg() noexcept;
-	int z_deg() noexcept;
+	int x_deg() const noexcept;
+	int y_deg() const noexcept;
+	int z_deg() const noexcept;
 	bool is_deg_correct();
 	Monom operator+(const Monom& m);
 	Monom operator-(const Monom& m);

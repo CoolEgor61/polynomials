@@ -41,7 +41,7 @@ TEST(Polynom, can_sub_polynoms)
 	EXPECT_EQ(fst.get_deg(), q.Plnm.first->value.get_deg());
 	EXPECT_EQ(fst.get_k(), q.Plnm.first->value.get_k());
 }
-TEST(Polymon, can_mul_scalar)
+TEST(Polynom, can_mul_scalar)
 {
 	TList<Monom>b, b1;
 	Monom c(100, 2), d(111, 1); Monom ans1(100, 8), ans2(111, 4), fst;

@@ -1,3 +1,4 @@
+#include "list.h"
 #include "polynom.h"
 
 TList<Monom> Polynom::get_Plnm() noexcept { return Plnm; };
@@ -7,7 +8,7 @@ Polynom::Polynom()
 	Monom s;
 	Plnm.push_front(s);
 }
-Polynom::Polynom(TList<Monom>& _Plnm)
+Polynom::Polynom(const TList<Monom>& _Plnm)
 {
 	Monom s, f;
 	Plnm.push_front(s);
@@ -24,126 +25,93 @@ Polynom::Polynom(const Polynom& p) : Plnm(p.Plnm) {};
 Polynom Polynom::operator+(Polynom& p)
 {
 	Polynom res;
-	Monom val_t, val_p;
-	TNode<Monom> *next_this = this->Plnm.first->next, *next_p = p.Plnm.first->next;
-	val_t = next_this->value; val_p = next_p->value;
-	while (next_this != NULL && next_p != NULL)
+	TList<Monom>::mIterator it1 = this->Plnm.begin(), it2 = p.Plnm.begin();
+	++it1; ++it2;
+	while (it1 != this->Plnm.end() && it2 != p.Plnm.end())
 	{
-		if (val_t.get_deg() == val_p.get_deg())
-		{
-			Monom tmp = val_t+val_p;
-			if (tmp.get_k() != 0) res.Plnm.push_back(tmp);
-			next_this = next_this->next; next_p = next_p->next;
-			if (next_this != NULL) val_t = next_this->value;
-			if (next_p != NULL) val_p = next_p->value;
+		if (it1->value.get_deg() == it2->value.get_deg()) {
+			res.Plnm.push_back(it1->value + it2->value);
+			++it1; ++it2;
 		}
-		else if (val_t.get_deg() > val_p.get_deg())
-		{
-			Monom tmp(val_t.get_deg(), val_t.get_k());
-			res.Plnm.push_back(tmp);
-			next_this = next_this->next;
-			if (next_this != NULL) val_t = next_this->value;
+		else if (it1->value.get_deg() > it2->value.get_deg()) {
+			res.Plnm.push_back(it1->value);
+			++it1;
 		}
 		else {
-			Monom tmp(val_p.get_deg(), val_p.get_k());
-			res.Plnm.push_back(tmp);
-			next_p = next_p->next;
-			if (next_p != NULL) val_p = next_p->value;
+			res.Plnm.push_back(it2->value);
+			++it2;
 		}
 	}
-	while (next_this != NULL)
+	while (it1 != this->Plnm.end())
 	{
-		Monom tmp(val_t.get_deg(), val_t.get_k());
-		res.Plnm.push_back(tmp);
-		next_this = next_this->next;
-		if (next_this != NULL) val_t = next_this->value;
+		res.Plnm.push_back(it1->value);
+		++it1;
 	}
-	while (next_p != NULL)
+	while (it2 != p.Plnm.end())
 	{
-		Monom tmp(val_p.get_deg(), val_p.get_k());
-		res.Plnm.push_back(tmp);
-		next_p = next_p->next;
-		if (next_p != NULL) val_p = next_p->value;
+		res.Plnm.push_back(it2->value);
+		++it2;
 	}
 	return res;
 }
-
 Polynom Polynom::operator-(Polynom& p)
 {
 	Polynom res;
-	Monom val_t, val_p;
-	TNode<Monom>* next_this = this->Plnm.first->next, * next_p = p.Plnm.first->next;
-	val_t = next_this->value; val_p = next_p->value;
-	while (next_this != NULL && next_p != NULL)
+	TList<Monom>::mIterator it1 = this->Plnm.begin(), it2 = p.Plnm.begin();
+	++it1; ++it2;
+	while (it1 != this->Plnm.end() && it2 != p.Plnm.end())
 	{
-		if (val_t.get_deg() == val_p.get_deg())
-		{
-			Monom tmp = val_t - val_p;
-			if (tmp.get_k() != 0) res.Plnm.push_back(tmp);
-			next_this = next_this->next; next_p = next_p->next;
-			if (next_this != NULL) val_t = next_this->value;
-			if (next_p != NULL) val_p = next_p->value;
+		if (it1->value.get_deg() == it2->value.get_deg()) {
+			res.Plnm.push_back(it1->value - it2->value);
+			++it1; ++it2;
 		}
-		else if (val_t.get_deg() > val_p.get_deg())
-		{
-			Monom tmp(val_t.get_deg(),-val_t.get_k());
-			res.Plnm.push_back(tmp);
-			next_this = next_this->next;
-			if (next_this != NULL) val_t = next_this->value;
+		else if (it1->value.get_deg() > it2->value.get_deg()) {
+			res.Plnm.push_back(it1->value*(-1));
+			++it1;
 		}
 		else {
-			Monom tmp(val_p.get_deg(), -val_p.get_k());
-			res.Plnm.push_back(tmp);
-			next_p = next_p->next;
-			if (next_p != NULL) val_p = next_p->value;
+			res.Plnm.push_back(it2->value*(-1));
+			++it2;
 		}
 	}
-	while (next_this != NULL)
+	while (it1 != this->Plnm.end())
 	{
-		Monom tmp(val_t.get_deg(), -val_t.get_k());
-		res.Plnm.push_back(tmp);
-		next_this = next_this->next;
-		if (next_this != NULL) val_t = next_this->value;
+		res.Plnm.push_back(it1->value*(-1));
+		++it1;
 	}
-	while (next_p != NULL)
+	while (it2 != p.Plnm.end())
 	{
-		Monom tmp(val_p.get_deg(), -val_p.get_k());
-		res.Plnm.push_back(tmp);
-		next_p = next_p->next;
-		if (next_p != NULL) val_p = next_p->value;
+		res.Plnm.push_back(it2->value*(-1));
+		++it2;
 	}
 	return res;
 }
 
 Polynom Polynom::operator*(const double q)
 {
-	Polynom res; Monom val_t;
-	TNode<Monom> *next_this = this->Plnm.first->next;
-	while (next_this != NULL)
+	Polynom res;
+	TList<Monom>::mIterator it1 = this->Plnm.begin(); ++it1;
+	while (it1 != this->Plnm.end())
 	{
-		val_t = next_this->value;
-		res.Plnm.push_back(val_t*q);
-		next_this = next_this->next;
+		res.Plnm.push_back(it1->value * (q));
+		++it1;
 	}
 	return res;
 }
 Polynom Polynom::operator*(Polynom& p)
 {
 	Polynom res;
-	Monom val_t, val_p;
-	TNode<Monom> *next_this = this->Plnm.first->next;
-	TNode<Monom>* next_p = p.Plnm.first->next, *next_p_reserve = p.Plnm.first->next;
-	while (next_this != NULL)
+	TList<Monom>::mIterator it1 = this->Plnm.begin(), it2 = p.Plnm.begin();
+	++it1; ++it2;
+	while (it1 != this->Plnm.end())
 	{
-		val_t = next_this->value;
-		while (next_p != NULL)
+		while (it2 != p.Plnm.end())
 		{
-			val_p = next_p->value;
-			res.Plnm.push_back(val_t * val_p);
-			next_p = next_p->next;
+			res.Plnm.push_back(it1->value * it2->value);
+			++it2;
 		}
-		next_this=next_this->next;
-		next_p = next_p_reserve;
+		++it1;
+		it2 = p.Plnm.begin(); ++it2;
 	}
 	return res;
 }
