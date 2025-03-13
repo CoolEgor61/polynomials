@@ -36,7 +36,7 @@ public:
         TNode<T>* get_ptr() noexcept { return ptr; };
         mIterator(TNode<T>* p) : ptr(p) {};
         mIterator(const mIterator& iter) : ptr(iter.ptr) {};
-        TNode<T>* operator*() { return (this->ptr); };
+        TNode<T>& operator*() { return (this->ptr); };
         TNode<T>* operator->() { return (this->ptr); };
         bool operator== (const TList<T>::mIterator& iter) { return (this->ptr == iter.ptr); };
         bool operator!= (const TList<T>::mIterator& iter) { return !(this->ptr == iter.ptr); };
@@ -56,7 +56,13 @@ public:
     }
     TList(TList<T>&& _list) noexcept
     {
-        this->first = NULL;
+        TNode<T>* p;
+        while (this->first != NULL)
+        {
+            p = this->first;
+            this->first = first->next;
+            delete p;
+        }
         std::swap(*this, _list);
     }
     ~TList()
@@ -148,8 +154,8 @@ public:
         else while (node_->next != NULL) node_ = node_->next;
         return node_;
     }
-    mIterator begin() noexcept { return first; };
-    mIterator end() noexcept { return NULL; };
+    mIterator begin() noexcept { return mIterator(first); };
+    mIterator end() noexcept { return mIterator(NULL); };
 };
 
 #endif 
