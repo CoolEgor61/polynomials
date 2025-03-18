@@ -1,1 +1,1 @@
-# polynomials
+# translator
